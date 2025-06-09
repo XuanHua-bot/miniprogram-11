@@ -1,0 +1,27 @@
+<view class="safe-top"></view>
+<view class="custom-nav">
+  <view class="nav-content">
+    <view class="nav-back" bindtap="onBack">
+      <image src="/icons/back.png" style="width:40rpx;height:40rpx;vertical-align:middle;" />
+    </view>
+    <view class="nav-title">商品详情</view>
+  </view>
+</view>
+<view class="container" style="padding-top: 108rpx; padding-bottom: 40rpx;">
+  <swiper class="swiper" indicator-dots="true" autoplay="true" interval="3000" duration="500">
+    <block wx:for="{{(product.images && product.images.length ? product.images : ['https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg'])}}" wx:key="index">
+      <swiper-item>
+        <image src="{{item}}" mode="aspectFill" class="swiper-img" />
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class="title">{{product.title}}</view>
+  <view class="price">￥{{product.price}}</view>
+  <view class="tag tag-primary">{{product.category}}</view>
+  <view class="subtitle">{{product.description}}</view>
+  <view class="desc">{{product.location}}</view>
+  <view class="btn-group">
+    <button class="btn btn-outline" bindtap="onBuy">购买</button>
+    <button class="btn" bindtap="onContact">联系卖家</button>
+  </view>
+</view> 

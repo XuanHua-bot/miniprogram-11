@@ -1,0 +1,44 @@
+<page-meta>
+  <navigation-bar
+    title="校园二手交易"
+    front-color="#000000"
+    background-color="#ffffff"
+  />
+</page-meta>
+
+<view class="safe-top"></view>
+<view class="custom-nav">
+  <view class="nav-content">
+    <view class="nav-title">自由市场</view>
+  </view>
+</view>
+<view class="container" style="padding-top: 108rpx;">
+  <view class="search-bar">
+    <input class="input" placeholder="搜索商品/标签" value="{{searchValue}}" bindinput="onSearchInput" bindconfirm="onSearch" />
+  </view>
+  <scroll-view class="tabs" scroll-x>
+    <view class="tab-item {{currentTag==='全部'?'active':''}}" data-tag="全部" bindtap="onTagTap">全部</view>
+    <view class="tab-item {{currentTag===item?'active':''}}" wx:for="{{tagList}}" wx:key="item" data-tag="{{item}}" bindtap="onTagTap">{{item}}</view>
+  </scroll-view>
+  <scroll-view scroll-y style="height:calc(100vh - 220rpx);">
+    <view class="product-grid">
+      <block wx:if="{{productList.length}}">
+        <block wx:for="{{productList}}" wx:key="_id">
+          <view class="card" bindtap="onProductTap" data-id="{{item._id}}">
+            <image src="{{item.images && item.images.length ? item.images[0] : 'https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg'}}" mode="aspectFill" style="width:100%;height:200rpx;border-radius:8rpx;" />
+            <view class="title" style="font-size:28rpx;">{{item.title}}</view>
+            <view class="price">￥{{item.price}}</view>
+          </view>
+        </block>
+      </block>
+      <block wx:else>
+        <view style="text-align:center;color:#ccc;margin-top:100rpx;">暂无商品</view>
+      </block>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 发布按钮 -->
+<view class="publish-btn" bindtap="onPublishTap">
+  <text class="iconfont icon-add"></text>
+</view> 

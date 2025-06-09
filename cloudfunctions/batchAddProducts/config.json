@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "openapi": []
+  },
+  "triggers": [],
+  "timeout": 20,
+  "envId": "cloudbase-5gugwmg4321fd011"
+} 

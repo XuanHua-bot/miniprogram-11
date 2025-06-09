@@ -1,0 +1,439 @@
+.container {
+  padding: 0;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 12rpx;
+  margin: 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.product-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 16rpx;
+}
+
+.product-price {
+  font-size: 40rpx;
+  color: #ff4d4f;
+  font-weight: bold;
+  margin-bottom: 16rpx;
+}
+
+.product-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24rpx;
+  color: var(--text-color-lighter);
+  margin-bottom: 16rpx;
+}
+
+.product-location {
+  display: flex;
+  align-items: center;
+}
+
+.location-icon {
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 4rpx;
+}
+
+.product-description {
+  font-size: 28rpx;
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+}
+
+.product-images {
+  margin: 20rpx 0;
+}
+
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10rpx;
+}
+
+.image-item {
+  width: calc(33.33% - 20rpx);
+  margin: 10rpx;
+  height: 200rpx;
+  background: var(--background-color);
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.image-item image {
+  width: 100%;
+  height: 100%;
+}
+
+.publisher-info {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  margin: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.publisher-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+}
+
+.publisher-name {
+  font-size: 28rpx;
+  color: var(--text-color);
+  margin-bottom: 4rpx;
+}
+
+.publish-time {
+  font-size: 24rpx;
+  color: var(--text-color-lighter);
+}
+
+.action-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  background: #fff;
+  border-top: 1rpx solid #eee;
+  z-index: 100;
+  height: 110rpx;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 20rpx;
+}
+
+.favorite-btn {
+  display: flex;
+  align-items: center;
+  color: #888;
+  background: #f7f7f7;
+  border: none;
+  border-radius: 40rpx;
+  padding: 0 32rpx;
+  font-size: 28rpx;
+  height: 72rpx;
+  margin-right: 16rpx;
+  transition: color 0.2s;
+}
+
+.favorite-btn.active {
+  color: #ff4d4f;
+  background: #fff0f0;
+}
+
+.contact-btn, .buy-btn {
+  flex: 1;
+  margin: 0 8rpx;
+  height: 72rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  color: #fff;
+  border: none;
+}
+
+.contact-btn {
+  background: #1890ff;
+}
+
+.buy-btn {
+  background: #ff4d4f;
+}
+
+.iconfont {
+  margin-right: 8rpx;
+  font-size: 32rpx;
+}
+
+/* 图片轮播 */
+.image-swiper {
+  width: 100%;
+  height: 750rpx;
+  background: #fff;
+}
+
+.image-swiper image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 商品描述 */
+.description {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+}
+
+.section-title::before {
+  content: '';
+  width: 6rpx;
+  height: 32rpx;
+  background: var(--primary-color);
+  margin-right: 16rpx;
+  border-radius: 3rpx;
+}
+
+.content {
+  font-size: 28rpx;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* 卖家信息 */
+.seller-info {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 24rpx 30rpx;
+  margin-top: 20rpx;
+  border-radius: 12rpx;
+}
+
+.seller-info .avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 24rpx;
+  background: #eee;
+}
+
+.seller-info .info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.seller-info .nickname {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.seller-info .id {
+  font-size: 22rpx;
+  color: #aaa;
+  margin-top: 6rpx;
+}
+
+/* 编辑和删除按钮 */
+.edit-btn, .delete-btn {
+  flex: 1;
+  height: 72rpx;
+  border-radius: 36rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10rpx;
+}
+
+.edit-btn {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.delete-btn {
+  background: var(--error-color);
+  color: #fff;
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #999;
+}
+
+.loading-icon {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #f3f3f3;
+  border-top: 4rpx solid #ff4d4f;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 删除确认弹窗 */
+.delete-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-content {
+  width: 560rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 40rpx;
+}
+
+.delete-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: var(--text-color);
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.delete-buttons {
+  display: flex;
+  gap: 20rpx;
+}
+
+.delete-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cancel-btn {
+  background: var(--background-color);
+  color: var(--text-color);
+}
+
+.confirm-btn {
+  background: var(--error-color);
+  color: #fff;
+}
+
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.product-info {
+  margin-top: 20rpx;
+  padding: 30rpx;
+  background: #fff;
+}
+
+.product-info .title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.product-info .price {
+  font-size: 48rpx;
+  color: #ff4d4f;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.product-info .meta {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 20rpx;
+}
+
+.product-info .meta .location {
+  margin-right: 20rpx;
+}
+
+.product-info .description {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+.swiper {
+  width: 100%;
+  height: 360rpx;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+}
+
+.swiper-img {
+  width: 100%;
+  height: 360rpx;
+  object-fit: cover;
+  border-radius: 12rpx;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: 600;
+  margin: 20rpx 0 10rpx 0;
+  color: var(--text-color);
+}
+
+.price {
+  color: #e54d42;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.tag {
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: var(--text-color-light);
+  margin-bottom: 10rpx;
+}
+
+.desc {
+  color: var(--text-color-lighter);
+  font-size: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.btn-group {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 20rpx;
+}

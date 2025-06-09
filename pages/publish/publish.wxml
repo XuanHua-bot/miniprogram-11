@@ -1,0 +1,40 @@
+<view class="safe-top"></view>
+<view class="custom-nav">
+  <view class="nav-content">
+    <view class="nav-title">发布商品</view>
+  </view>
+</view>
+<view class="container" style="padding-top: 108rpx; padding-bottom: 40rpx;">
+  <form bindsubmit="onSubmit">
+    <view class="form-group">
+      <input class="input" name="title" placeholder="商品标题（必填）" maxlength="30" />
+    </view>
+    <view class="form-group">
+      <textarea class="input" name="description" placeholder="商品描述（必填，如品牌、成色、配件、转让原因等）" maxlength="200" />
+    </view>
+    <view class="form-group">
+      <view class="price-input">
+        <text class="price-symbol">￥</text>
+        <input class="input" name="price" type="digit" placeholder="价格（元，必填）" />
+      </view>
+    </view>
+    <view class="form-group">
+      <picker name="category" mode="selector" range="{{tagList}}" bindchange="onCategoryChange">
+        <view class="input">{{tagList[categoryIndex] || '选择分类（必选）'}}</view>
+      </picker>
+    </view>
+    <view class="form-group">
+      <input class="input" name="location" placeholder="交易地点（如宿舍、快递点等，必填）" maxlength="30" />
+    </view>
+    <view class="form-group">
+      <view>上传图片（最多3张，必填）</view>
+      <view class="img-list">
+        <block wx:for="{{images}}" wx:key="index">
+          <image src="{{item}}" class="img" mode="aspectFill" />
+        </block>
+        <view wx:if="{{images.length < 3}}" class="img-add" bindtap="onChooseImage">+</view>
+      </view>
+    </view>
+    <button class="btn btn-block" formType="submit">发布</button>
+  </form>
+</view> 

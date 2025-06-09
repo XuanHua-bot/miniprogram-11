@@ -1,0 +1,37 @@
+.container {
+  padding: 0;
+}
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 10rpx var(--shadow-color);
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+.title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin: 10rpx 0 6rpx 0;
+  color: var(--text-color);
+}
+.price {
+  color: #e54d42;
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 6rpx;
+}
+.tag {
+  margin-bottom: 6rpx;
+}
+.subtitle {
+  font-size: 26rpx;
+  color: var(--text-color-light);
+  margin-bottom: 6rpx;
+}
+.btn {
+  margin-top: 10rpx;
+}
+.scroll-area {
+  height: calc(100vh - 220rpx);
+  padding-bottom: 24rpx;
+} 

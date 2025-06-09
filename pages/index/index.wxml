@@ -1,0 +1,33 @@
+<!--index.wxml-->
+<page-meta>
+  <navigation-bar
+    title="校园二手交易"
+    front-color="#000000"
+    background-color="#ffffff"
+  />
+</page-meta>
+
+<view class="safe-top"></view>
+<view class="custom-nav">
+  <view class="nav-content">
+    <view class="nav-title">附近二手</view>
+  </view>
+</view>
+<view class="container" style="padding-top: 108rpx; padding-bottom: 40rpx;">
+  <scroll-view scroll-y style="height:calc(100vh - 220rpx);">
+    <block wx:if="{{productList.length}}">
+      <block wx:for="{{productList}}" wx:key="_id">
+        <view class="card" bindtap="onProductTap" data-id="{{item._id}}">
+          <image src="{{item.images[0] || '/icons/home.png'}}" mode="aspectFill" style="width: 100%; height: 300rpx; border-radius: 12rpx;" />
+          <view class="title">{{item.title}}</view>
+          <view class="price">￥{{item.price}}</view>
+          <view class="tag tag-primary">{{item.category}}</view>
+          <view class="subtitle">{{item.desc}}</view>
+        </view>
+      </block>
+    </block>
+    <block wx:else>
+      <view style="text-align:center;color:#ccc;margin-top:100rpx;">暂无商品，快去发布吧~</view>
+    </block>
+  </scroll-view>
+</view>

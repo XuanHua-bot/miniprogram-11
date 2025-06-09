@@ -1,0 +1,90 @@
+<view class="safe-top"></view>
+<view class="custom-nav">
+  <view class="nav-content">
+    <view class="nav-title">我的</view>
+  </view>
+</view>
+<view class="container" style="padding-top: 108rpx; padding-bottom: 40rpx;">
+  <view class="user-info">
+    <image 
+      class="avatar" 
+      src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" 
+      mode="aspectFill"
+    />
+    <view class="user-detail">
+      <text class="nickname">{{userInfo.nickName || '未登录'}}</text>
+      <text class="user-id" wx:if="{{userInfo._id}}">ID: {{userInfo._id}}</text>
+    </view>
+    <view class="actions" wx:if="{{userInfo}}">
+      <button class="edit-btn" bindtap="onEditProfile">编辑资料</button>
+      <button class="logout-btn" bindtap="onLogout">退出登录</button>
+    </view>
+    <view class="login-btn" bindtap="handleLogin" wx:if="{{!userInfo}}">
+      登录/注册
+    </view>
+  </view>
+
+  <view class="menu-list">
+    <view class="menu-item" bindtap="navigateToMyProducts">
+      <text class="menu-icon">📦</text>
+      <text class="menu-text">我的发布</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="navigateToSettings">
+      <text class="menu-icon">⚙️</text>
+      <text class="menu-text">设置</text>
+      <text class="menu-arrow">></text>
+    </view>
+  </view>
+
+  <view class="version-info">
+    <text>版本 1.0.0</text>
+  </view>
+
+  <view class="product-tabs">
+    <view 
+      class="tab {{activeTab === 'published' ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="published"
+    >我发布的</view>
+    <view 
+      class="tab {{activeTab === 'purchased' ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="purchased"
+    >我购买的</view>
+  </view>
+
+  <scroll-view 
+    class="product-list"
+    scroll-y
+    enable-back-to-top
+    bindscrolltolower="loadMore"
+  >
+    <view class="loading" wx:if="{{loading}}">加载中...</view>
+    <view class="no-data" wx:elif="{{!userInfo}}">请先登录</view>
+    <view class="no-data" wx:elif="{{products.length === 0}}">
+      {{activeTab === 'published' ? '暂无发布的商品' : '暂无购买的商品'}}
+    </view>
+    <view 
+      class="product-item"
+      wx:for="{{products}}"
+      wx:key="_id"
+      bindtap="onProductTap"
+      data-id="{{item._id}}"
+    >
+      <image class="product-image" src="{{item.images[0]}}" mode="aspectFill" />
+      <view class="product-info">
+        <view class="product-title">{{item.title}}</view>
+        <view class="product-price">¥{{item.price}}</view>
+        <view class="product-meta">
+          <text class="location">{{item.location}}</text>
+          <text class="time">{{item.createTime}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="no-more" wx:if="{{!loading && !hasMore}}">没有更多了</view>
+  </scroll-view>
+
+  <button class="btn btn-outline" style="margin-top:40rpx;" bindtap="onBatchAddProducts">一键生成测试商品（开发用）</button>
+  <slot />
+</view> 
