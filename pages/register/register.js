@@ -1,67 +1,88 @@
-// pages/register/register.js
 Page({
   data: {
     username: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    loading: false
   },
 
-  onInput(e) {
-    const { name } = e.currentTarget.dataset;
-    const value = e.detail.value;
-    this.setData({ [name]: value });
+  // 输入事件处理
+  onUsernameInput(e) {
+    this.setData({ username: e.detail.value });
   },
 
-  async handleRegister() {
+  onPasswordInput(e) {
+    this.setData({ password: e.detail.value });
+  },
+
+  onConfirmPasswordInput(e) {
+    this.setData({ confirmPassword: e.detail.value });
+  },
+
+  // 表单验证
+  validateForm() {
     const { username, password, confirmPassword } = this.data;
     
-    if (!username || !password) {
-      wx.showToast({
-        title: '用户名和密码不能为空',
-        icon: 'none'
-      });
-      return;
+    if (!username.trim()) {
+      wx.showToast({ title: '请输入用户名', icon: 'none' });
+      return false;
+    }
+    
+    if (!password) {
+      wx.showToast({ title: '请输入密码', icon: 'none' });
+      return false;
+    }
+    
+    if (password.length < 6) {
+      wx.showToast({ title: '密码长度至少6位', icon: 'none' });
+      return false;
     }
     
     if (password !== confirmPassword) {
-      wx.showToast({
-        title: '两次输入的密码不一致',
-        icon: 'none'
-      });
-      return;
+      wx.showToast({ title: '两次输入的密码不一致', icon: 'none' });
+      return false;
     }
+    
+    return true;
+  },
 
+  // 注册处理
+  async handleRegister() {
+    if (!this.validateForm()) return;
+    
+    this.setData({ loading: true });
+    
     try {
-      wx.showLoading({ title: '注册中...' });
+      // 调用云函数进行注册
       const { result } = await wx.cloud.callFunction({
         name: 'user',
         data: {
           action: 'register',
-          data: { username, password }
+          data: {
+            username: this.data.username,
+            password: this.data.password,
+            createTime: new Date()
+          }
         }
       });
-      wx.hideLoading();
-
-      if (result && result.success) {
-        wx.showToast({
-          title: '注册成功，请登录',
-          icon: 'success'
-        });
-        
-        // 延迟返回登录页
+      
+      if (result.success) {
+        wx.showToast({ title: '注册成功', icon: 'success' });
+        // 注册成功后返回登录页
         setTimeout(() => {
           wx.navigateBack();
         }, 1500);
       } else {
-        throw new Error(result?.message || '注册失败');
+        throw new Error(result.message || '注册失败');
       }
     } catch (error) {
-      console.error('注册失败：', error);
-      wx.hideLoading();
-      wx.showToast({
-        title: error.message || '注册失败，请重试',
-        icon: 'none'
+      console.error('注册失败:', error);
+      wx.showToast({ 
+        title: error.message || '注册失败，请重试', 
+        icon: 'none' 
       });
+    } finally {
+      this.setData({ loading: false });
     }
   }
-});
+});  

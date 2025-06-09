@@ -1,26 +1,47 @@
 <view class="container">
   <view class="logo-container">
-    <image class="logo" src="/images/logo.png" mode="aspectFit"></image>
-    <text class="title">校园二手交易</text>
+    <text class="logo">用户注册</text>
   </view>
-  
+
   <view class="form-container">
-    <input class="input" 
-           placeholder="请输入用户名" 
-           data-name="username" 
-           bindinput="onInput" />
-    <input class="input" 
-           placeholder="请输入密码" 
-           password 
-           data-name="password" 
-           bindinput="onInput" />
-    <input class="input" 
-           placeholder="请再次输入密码" 
-           password 
-           data-name="confirmPassword" 
-           bindinput="onInput" />
-    
-    <button class="btn primary-btn" bindtap="handleRegister">注册</button>
-    <navigator class="link" url="/pages/login/login">已有账号？去登录</navigator>
+    <view class="input-item">
+      <text class="label">用户名</text>
+      <input 
+        type="text" 
+        placeholder="请输入用户名"
+        bindinput="onUsernameInput" 
+        maxlength="20"
+      />
+    </view>
+
+    <view class="input-item">
+      <text class="label">密码</text>
+      <input 
+        type="password" 
+        placeholder="请输入密码"
+        bindinput="onPasswordInput"
+      />
+    </view>
+
+    <view class="input-item">
+      <text class="label">确认密码</text>
+      <input 
+        type="password" 
+        placeholder="请再次输入密码"
+        bindinput="onConfirmPasswordInput"
+      />
+    </view>
+
+    <button 
+      class="register-btn {{loading ? 'loading' : ''}}" 
+      bindtap="handleRegister"
+      disabled="{{loading}}"
+    >
+      {{loading ? '注册中...' : '注册'}}
+    </button>
+
+    <view class="login-link" bindtap="goToLogin">
+      <text>已有账号？前往登录</text>
+    </view>
   </view>
-</view>
+</view>  
