@@ -1,203 +1,63 @@
-// index.js
-const app = getApp()
+// 云函数入口文件
+const cloud = require('wx-server-sdk')
+cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
+const db = cloud.database()
 
-Page({
-  data: {
-    categories: ['数码', '教材', '生活用品', '其他'],
-    currentCategory: '',
-    searchKey: '',
-    products: [],
-    loading: false,
-    page: 1,
-    pageSize: 10,
-    hasMore: true,
-    productList: []
-  },
-
-  onLoad() {
-    // 初始化云环境
-    wx.cloud.init({
-      env: 'cloudbase-5gugwmg4321fd011'
-    });
-
-    this.getProductList();
-  },
-
-  onShow() {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo
-      })
-    }
-    this.getProductList();
-  },
-
-  onPullDownRefresh() {
-    this.getProductList(() => wx.stopPullDownRefresh());
-  },
-
-  onReachBottom() {
-    this.loadProducts()
-  },
-
-  getProductList(cb) {
-    wx.cloud.callFunction({
-      name: 'product',
-      data: { action: 'getProductList', data: {} },
-      success: res => {
-        this.setData({ productList: res.result.data || [] });
-        cb && cb();
-      },
-      fail: err => {
-        wx.showToast({ title: '加载失败', icon: 'none' });
-        cb && cb();
-      }
-    });
-  },
-
-  async loadProducts(isLoadMore = false) {
-    if (this.data.loading || (!isLoadMore && !this.data.hasMore)) return;
-
-    this.setData({ loading: true });
-
-    try {
-      const { result } = await wx.cloud.callFunction({
-        name: 'product',
-        data: {
-          action: 'getProductList',
-          data: {
-            page: this.data.page,
-            pageSize: this.data.pageSize
-          }
-        }
-      });
-
-      if (result && result.success) {
-        // 处理商品图片
-        const products = result.data.map(product => ({
-          ...product,
-          images: product.images && product.images.length > 0 
-            ? product.images 
-            : ['/images/default-product.png']
-        }));
-
-        this.setData({
-          products: [...this.data.products, ...products],
-          hasMore: products.length === this.data.pageSize,
-          loading: false
-        });
-      } else {
-        throw new Error(result?.message || '获取商品列表失败');
-      }
-    } catch (error) {
-      console.error('加载商品列表失败：', error);
-      this.setData({ loading: false });
-      wx.showToast({
-        title: '加载失败',
-        icon: 'none'
-      });
-    }
-  },
-
-  onSearchInput(e) {
-    this.setData({
-      searchKey: e.detail.value
-    });
-  },
-
-  clearSearch() {
-    this.setData({
-      searchKey: '',
-      page: 1,
-      hasMore: true
-    });
-    this.loadProducts();
-  },
-
-  onSearch() {
-    this.setData({
-      page: 1,
-      hasMore: true
-    });
-    this.loadProducts();
-  },
-
-  onCategoryTap(e) {
-    const { category } = e.currentTarget.dataset;
-    this.setData({
-      currentCategory: category,
-      page: 1,
-      hasMore: true
-    });
-    this.loadProducts();
-  },
-
-  loadMore() {
-    if (this.data.hasMore) {
-      this.loadProducts(true);
-    }
-  },
-
-  onProductTap(e) {
-    const id = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/detail/detail?id=${id}` });
-  },
-
-  onPublishTap() {
-    wx.navigateTo({
-      url: '/pages/publish/publish'
-    });
-  },
-
-  formatTime(date) {
-    date = new Date(date)
-    const now = new Date()
-    const diff = now - date
-
-    if (diff < 60000) { // 1分钟内
-      return '刚刚'
-    } else if (diff < 3600000) { // 1小时内
-      return Math.floor(diff / 60000) + '分钟前'
-    } else if (diff < 86400000) { // 1天内
-      return Math.floor(diff / 3600000) + '小时前'
-    } else if (diff < 604800000) { // 1周内
-      return Math.floor(diff / 86400000) + '天前'
-    } else {
-      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
-    }
-  },
-
-  async initTestData() {
-    try {
-      wx.showLoading({
-        title: '初始化中...',
-        mask: true
-      })
-
-      const res = await wx.cloud.callFunction({
-        name: 'product',
-        data: {
-          type: 'init'
-        }
-      })
-
-      if (res.result.success) {
-        wx.showToast({
-          title: '初始化成功',
-          icon: 'success'
-        })
-        this.loadProducts(true)
-      } else {
-        throw new Error(res.result.message)
-      }
-    } catch (err) {
-      console.error('初始化测试数据失败：', err)
-      wx.showToast({
-        title: '初始化失败',
-        icon: 'none'
-      })
-    } finally {
-      wx.hideLoading()
-    }
+// 云函数入口函数
+exports.main = async (event, context) => {
+  const { action, data } = event
+  switch (action) {
+    case 'register':
+      return await register(data.username, data.password);
+    case 'login':
+      return await login(data.username, data.password);
+    default:
+      return { success: false, message: '未知操作' };
   }
-})
+}
+
+// 用户注册
+async function register(username, password) {
+  try {
+    // 检查用户名是否已存在
+    const user = await db.collection('users').where({ username }).get();
+    if (user.data.length > 0) {
+      return { success: false, message: '用户名已存在' };
+    }
+    
+    // 创建新用户（实际项目中建议加密密码）
+    const newUser = {
+      username,
+      password,
+      createTime: db.serverDate(),
+      updateTime: db.serverDate()
+    };
+    
+    const res = await db.collection('users').add({ data: newUser });
+    newUser._id = res._id; // 添加自动生成的ID
+    
+    return { success: true, data: newUser };
+  } catch (err) {
+    console.error('注册失败：', err);
+    return { success: false, message: '注册失败，请重试' };
+  }
+}
+
+// 用户登录
+async function login(username, password) {
+  try {
+    // 查询用户
+    const user = await db.collection('users')
+      .where({ username, password })
+      .get();
+      
+    if (user.data.length === 0) {
+      return { success: false, message: '用户名或密码错误' };
+    }
+    
+    return { success: true, data: user.data[0] };
+  } catch (err) {
+    console.error('登录失败：', err);
+    return { success: false, message: '登录失败，请重试' };
+  }
+}

@@ -7,19 +7,19 @@ cloud.init({
 
 const db = cloud.database()
 const _ = db.command
-const $ = db.command.aggregate
 
 // 云函数入口函数
 exports.main = async (event, context) => {
   const { action, data } = event
-  const wxContext = cloud.getWXContext()
-  const openid = wxContext.OPENID
-
   switch (action) {
     case 'getUserInfo':
-      return await getUserInfo(openid)
+      return await getUserInfo(data.id);
     case 'updateUserInfo':
-      return await updateUserInfo(openid, data)
+      return await updateUserInfo(data.id, data.userInfo);
+    case 'register':
+      return await register(data.username, data.password);
+    case 'login':
+      return await login(data.username, data.password);
     default:
       return {
         success: false,
@@ -29,9 +29,9 @@ exports.main = async (event, context) => {
 }
 
 // 获取用户信息
-async function getUserInfo(openid) {
+async function getUserInfo(id) {
   try {
-    const userInfo = await db.collection('users').doc(openid).get()
+    const userInfo = await db.collection('users').doc(id).get()
     return {
       success: true,
       data: userInfo.data
@@ -46,9 +46,9 @@ async function getUserInfo(openid) {
 }
 
 // 更新用户信息
-async function updateUserInfo(openid, userInfo) {
+async function updateUserInfo(id, userInfo) {
   try {
-    await db.collection('users').doc(openid).update({
+    await db.collection('users').doc(id).update({
       data: {
         ...userInfo,
         updateTime: db.serverDate()
@@ -67,38 +67,58 @@ async function updateUserInfo(openid, userInfo) {
   }
 }
 
-// 获取用户发布的商品
-async function getUserProducts(openid, { page = 1, pageSize = 10 }) {
+// 注册用户
+async function register(username, password) {
   try {
-    const total = await db.collection('products')
-      .where({
-        _openid: openid
-      })
-      .count()
-
-    const products = await db.collection('products')
-      .where({
-        _openid: openid
-      })
-      .orderBy('createTime', 'desc')
-      .skip((page - 1) * pageSize)
-      .limit(pageSize)
-      .get()
-
+    const user = await db.collection('users').where({ username }).get();
+    if (user.data.length > 0) {
+      return {
+        success: false,
+        message: '用户名已存在'
+      };
+    }
+    const newUser = {
+      username,
+      password,
+      createTime: db.serverDate(),
+      updateTime: db.serverDate()
+    };
+    const res = await db.collection('users').add({
+      data: newUser
+    });
+    newUser._id = res._id;
     return {
       success: true,
-      data: {
-        list: products.data,
-        total: total.total,
-        page,
-        pageSize
-      }
-    }
+      data: newUser
+    };
   } catch (err) {
-    console.error('获取用户发布的商品失败：', err)
+    console.error('注册用户失败：', err);
     return {
       success: false,
-      message: '获取用户发布的商品失败'
-    }
+      message: '注册用户失败'
+    };
   }
-} 
+}
+
+// 用户登录
+async function login(username, password) {
+  try {
+    const user = await db.collection('users').where({ username, password }).get();
+    if (user.data.length === 0) {
+      return {
+        success: false,
+        message: '用户名或密码错误'
+      };
+    }
+    return {
+      success: true,
+      data: user.data[0]
+    };
+  } catch (err) {
+    console.error('用户登录失败：', err);
+    return {
+      success: false,
+      message: '用户登录失败'
+    };
+  }
+}

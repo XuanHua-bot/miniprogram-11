@@ -1,8 +1,9 @@
-// pages/login/login.js
+// pages/register/register.js
 Page({
   data: {
     username: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   },
 
   onInput(e) {
@@ -11,22 +12,31 @@ Page({
     this.setData({ [name]: value });
   },
 
-  async handleLogin() {
-    const { username, password } = this.data;
+  async handleRegister() {
+    const { username, password, confirmPassword } = this.data;
+    
     if (!username || !password) {
       wx.showToast({
-        title: '请输入用户名和密码',
+        title: '用户名和密码不能为空',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      wx.showToast({
+        title: '两次输入的密码不一致',
         icon: 'none'
       });
       return;
     }
 
     try {
-      wx.showLoading({ title: '登录中...' });
+      wx.showLoading({ title: '注册中...' });
       const { result } = await wx.cloud.callFunction({
         name: 'user',
         data: {
-          action: 'login',
+          action: 'register',
           data: { username, password }
         }
       });
@@ -34,34 +44,24 @@ Page({
 
       if (result && result.success) {
         wx.showToast({
-          title: '登录成功',
+          title: '注册成功，请登录',
           icon: 'success'
         });
-        const app = getApp();
-        app.globalData.userInfo = result.data;
         
-        // 延迟跳转，确保提示框显示完整
+        // 延迟返回登录页
         setTimeout(() => {
-          wx.switchTab({
-            url: '/pages/index/index'
-          });
+          wx.navigateBack();
         }, 1500);
       } else {
-        throw new Error(result?.message || '登录失败');
+        throw new Error(result?.message || '注册失败');
       }
     } catch (error) {
-      console.error('登录失败：', error);
+      console.error('注册失败：', error);
       wx.hideLoading();
       wx.showToast({
-        title: error.message || '登录失败，请重试',
+        title: error.message || '注册失败，请重试',
         icon: 'none'
       });
     }
-  },
-
-  navigateToRegister() {
-    wx.navigateTo({
-      url: '/pages/register/register'
-    });
   }
 });

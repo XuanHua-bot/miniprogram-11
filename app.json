@@ -1,12 +1,13 @@
 {
   "pages": [
+    "pages/login/login",
+    "pages/register/register",
     "pages/index/index",
     "pages/market/market",
     "pages/publish/publish",
     "pages/profile/profile",
     "pages/detail/detail",
-    "pages/cart/cart",
-    "pages/login/login"
+    "pages/cart/cart"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -53,8 +54,7 @@
       }
     ]
   },
-  "style": "v2",
-  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
   "renderer": "skyline",
   "rendererOptions": {
     "skyline": {
@@ -63,8 +63,7 @@
       "sdkVersionBegin": "2.29.2"
     }
   },
-  "lazyCodeLoading": "requiredComponents",
-  "componentFramework": "glass-easel",
-  "debug": false,
-  "resizable": false
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "componentFramework": "glass-easel"
 }

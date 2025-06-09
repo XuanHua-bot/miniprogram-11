@@ -1,4 +1,4 @@
-/* pages/login/login.wxss */
+/* pages/register/register.wxss */
 .container {
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 100rpx;
+  margin-bottom: 80rpx;
 }
 
 .logo {
@@ -58,8 +58,10 @@
   color: #fff;
 }
 
-.secondary-btn {
-  background-color: #fff;
-  color: var(--primary-color);
-  border: 1rpx solid var(--primary-color);
+.link {
+  display: block;
+  text-align: center;
+  color: var(--text-color-light);
+  font-size: 26rpx;
+  margin-top: 20rpx;
 }
